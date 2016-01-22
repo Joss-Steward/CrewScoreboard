@@ -43,7 +43,6 @@
     <Folder Include="CrewScoreboard\templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README.md" />
     <Content Include="requirements.txt" />
     <Content Include="CrewScoreboard\static\content\bootstrap.css" />
     <Content Include="CrewScoreboard\static\content\bootstrap.min.css" />

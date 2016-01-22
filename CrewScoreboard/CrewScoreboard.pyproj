@@ -30,6 +30,12 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CrewScoreboard\default_settings.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CrewScoreboard\error_handling.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="CrewScoreboard\__init__.py" />
     <Compile Include="CrewScoreboard\views.py" />

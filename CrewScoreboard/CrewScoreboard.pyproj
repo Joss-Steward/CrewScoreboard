@@ -36,6 +36,9 @@
     <Compile Include="CrewScoreboard\error_handling.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CrewScoreboard\models.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="CrewScoreboard\__init__.py" />
     <Compile Include="CrewScoreboard\views.py" />

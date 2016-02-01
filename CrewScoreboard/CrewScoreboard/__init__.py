@@ -3,6 +3,7 @@ The flask application package.
 """
 
 from flask import Flask
+from playhouse.db_url import connect
 import peewee
 import logging 
 
@@ -10,7 +11,7 @@ import logging
 # it with the settings in the file specified in the environmental variable
 # (if one is given).
 app = Flask(__name__)
-app.config.from_object('CrewScoreboard.default_settings')
+app.config.from_object('CrewScoreboard.default_settings.Configuration')
 
 # If no settings file was set, catch the error and log it, but continue.
 # (This should happen when debugging. If it happens in prod, you haven't 
@@ -25,6 +26,7 @@ except RuntimeError as e:
 import CrewScoreboard.error_handling
 
 # Set up the database
-db = peewee.Database(app)
+app.db = connect(app.config['DATABASE'])
 
+from CrewScoreboard import models
 import CrewScoreboard.views

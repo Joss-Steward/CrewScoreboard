@@ -4,7 +4,7 @@ Routes and views for the flask application.
 
 from datetime import datetime
 from flask import render_template
-from CrewScoreboard import app
+from CrewScoreboard import app, models
 
 @app.route('/')
 @app.route('/home')
@@ -28,7 +28,8 @@ def contact():
 
 @app.route('/about')
 def about():
-    """Renders the about page."""
+    # Add a team just to test
+    null_ptr = Team.create(name='Null Pointer', color='#00FF00', points=1000)
     return render_template(
         'about.html',
         title='About',

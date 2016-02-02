@@ -25,7 +25,7 @@ class SecureModelView(ModelView):
                 return redirect(url_for('security.login', next=request.url))
 
 class UserAdminView(SecureModelView):
-    column_exclude_list = ['password, confirmed_at']
+    column_exclude_list = ['password', 'confirmed_at']
 
 # Setup Flask-Admin
 admin = Admin(app, name='Crew Scoreboard', template_mode='bootstrap3')

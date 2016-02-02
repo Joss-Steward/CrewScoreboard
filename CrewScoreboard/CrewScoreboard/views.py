@@ -7,6 +7,7 @@ from flask import render_template, Response
 from CrewScoreboard import app, models, user_datastore, security
 from flask.ext.security import Security, PeeweeUserDatastore, \
     UserMixin, RoleMixin, login_required
+from flask.ext.security.utils import encrypt_password
 
 #@app.route('/')
 #@app.route('/home')
@@ -38,6 +39,14 @@ def about():
         year=datetime.now().year,
         message='Your application description page.'
     )    
+
+
+@app.before_first_request
+def create_user():
+    for Model in (models.Role, models.User, models.UserRoles):
+        Model.drop_table(fail_silently=True)
+        Model.create_table(fail_silently=True)
+    user_datastore.create_user(email='matt@nobien.net', password=encrypt_password('password1'))
 
 # Views
 @app.route('/')

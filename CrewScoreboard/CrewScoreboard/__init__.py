@@ -5,8 +5,9 @@ The flask application package.
 from flask import Flask
 from playhouse.db_url import connect
 from flask.ext.security import Security, PeeweeUserDatastore, UserMixin, RoleMixin, login_required
+from flask_admin import Admin
+from flask_admin.contrib.peewee import ModelView
 
-#from peewee import
 import logging 
 
 # Load the application configuration first from the default file, then override
@@ -32,8 +33,14 @@ app.db = connect(app.config['DATABASE'])
 
 import CrewScoreboard.models
 
+models.create_tables()
+
 # Setup Flask-Security
 user_datastore = PeeweeUserDatastore(app.db, models.User, models.Role, models.UserRoles)
 security = Security(app, user_datastore)
+
+# Setup Flask-Admin
+admin = Admin(app, name='Crew Scoreboard', template_mode='bootstrap3')
+admin.add_view(models.UserAdminView(model=models.User, endpoint='model_view_user', name='Users'))
 
 import CrewScoreboard.views

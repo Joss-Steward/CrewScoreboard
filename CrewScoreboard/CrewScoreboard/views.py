@@ -3,11 +3,13 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template
-from CrewScoreboard import app, models
+from flask import render_template, Response
+from CrewScoreboard import app, models, user_datastore, security
+from flask.ext.security import Security, PeeweeUserDatastore, \
+    UserMixin, RoleMixin, login_required
 
-@app.route('/')
-@app.route('/home')
+#@app.route('/')
+#@app.route('/home')
 def home():
     """Renders the home page."""
     return render_template(
@@ -35,4 +37,10 @@ def about():
         title='About',
         year=datetime.now().year,
         message='Your application description page.'
-    )
+    )    
+
+# Views
+@app.route('/')
+@login_required
+def home():
+    return render_template('index.html')

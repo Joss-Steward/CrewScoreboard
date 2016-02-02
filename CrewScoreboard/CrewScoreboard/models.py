@@ -1,11 +1,8 @@
 import datetime
 
 from peewee import *
-from flask.ext.security import Security, PeeweeUserDatastore, UserMixin, RoleMixin, login_required, current_user
-
-from flask_admin.contrib.peewee import ModelView
-
 from CrewScoreboard import app
+from flask.ext.security import RoleMixin, UserMixin
 
 class BaseModel(Model):
     class Meta:
@@ -39,30 +36,16 @@ class UserRoles(BaseModel):
     name = property(lambda self: self.role.name)
     description = property(lambda self: self.role.description)
 
-class SecureModelView(ModelView):
-    def is_accessible(self):
-        if not current_user.is_active or not current_user.is_authenticated:
-            return False
-
-        if current_user.has_role('superuser'):
-            return True
-
-        return False
-
-    def _handle_view(self, name, **kwargs):        
-        # Override builtin _handle_view in order to redirect users when a view is not accessible.
-        if not self.is_accessible():
-            if current_user.is_authenticated:
-                # permission denied
-                abort(403)
-            else:
-                # login
-                return redirect(url_for('security.login', next=request.url))
-
-class UserAdminView(SecureModelView):
-    column_exclude_list = ['confirmed_at']
-
 def create_tables():
     app.db.connect()
     app.db.create_tables([Team, Student, Role, User, UserRoles])
+    app.user_datastore.create_role(name='user')
+    app.user_datastore.create_role(name='admin')
+    app.db.commit()
+    app.db.close()
 
+def drop_tables():
+    app.db.connect()
+    app.db.drop_tables([Team, Student, Role, User, UserRoles])
+    app.db.commit()
+    app.db.close()

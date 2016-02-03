@@ -33,7 +33,7 @@ def admin(username=None, password=None):
 
     try:    
         create_admin(username, password)
-        app.logger.info("Added a new admin user ({0}) from manage.py", username)
+        app.logger.info("Added a new admin user (" + username + ") from manage.py")
     except:
         print("Something went wrong, sorry.")
 

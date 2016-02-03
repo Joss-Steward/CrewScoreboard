@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +6,7 @@ from flask_login import LoginManager
 from config import config
 from CrewScoreboard.logging import configure_logging
 
-bootstrap = Bootstrap()
+#bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
@@ -28,7 +27,7 @@ def create_app(config_name):
     if app.debug:
         app.logger.warning("APPLICATION STARTED IN DEBUG MODE. ARBITRARY CODE EXECUTION WILL BE POSSIBLE.")
 
-    bootstrap.init_app(app)
+    #bootstrap.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)

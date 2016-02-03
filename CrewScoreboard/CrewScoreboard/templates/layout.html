@@ -1,55 +1,123 @@
-﻿{% extends "bootstrap/base.html" %}
-
-{% block title %}Flasky{% endblock %}
+﻿<html>
 
 {% block head %}
-{{ super() }}
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/site.css') }}" type="text/css">
+
+    <!--<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
 {% endblock %}
 
-{% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Flasky</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('main.index') }}">Home</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
-                {% endif %}
-            </ul>
+<body>
+    {% block navbar %}
+    <div class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">Flasky</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.can(Permission.ADD_USERS) %}
+                    <li><a href="{{ url_for('auth.logout') }}">Adminsterate</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                    {% endif %}
+                </ul>                
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
 
-{% block content %}
-<div class="container">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
+    <div class="container body-content">
+        {% block content %}
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            {% block page_content %}
+            {% endblock %}
+        {% endblock %}        
     </div>
-    {% endfor %}
-
-    {% block page_content %}{% endblock %}
-</div>
-{% endblock %}
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Place sticky footer content here.</p>
+        </div>
+    </footer>
+    <!--<footer class="section section-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>Footer header</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisici elit,
+                        <br>sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
+                        <br>Ut enim ad minim veniam, quis nostrud
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-info text-right">
+                        <br>
+                        <br>
+                    </p>
+                    <div class="row">
+                        <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+                            <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+                            <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+                            <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+                            <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 hidden-xs text-right">
+                            <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+                            <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+                            <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+                            <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>-->
+</body>
 
 {% block scripts %}
-{{ super() }}
 {{ moment.include_moment() }}
 {% endblock %}
+
+</html>

@@ -68,7 +68,11 @@ class AnonymouseUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymouseUser
 
 def create_admin(email, password):
-    user = User()
+    user = User.query.filter_by(username=email).first()
+    if user is None:
+        user = User()
+    else:
+        print("User (" + email + ") already exists. Altering password and adding permissions.")
     user.email = email
     user.username = email
     user.password = password

@@ -1,36 +1,40 @@
-"""
-The flask application package.
-"""
-
-import os
 from flask import Flask
-from playhouse.db_url import connect
+#from flask.ext.bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap
+#from flask.ext.mail import Mail
+from flask_mail import Mail
+#from flask.ext.moment import Moment
+from flask_moment import Moment
+#from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+#from flask.ext.login import LoginManager
+from flask_login import LoginManager
+from config import config
 
-#import logging 
+bootstrap = Bootstrap()
+mail = Mail()
+moment = Moment()
+db = SQLAlchemy()
 
-# Load the application configuration first from the default file, then override
-# it with the settings in the file specified in the environmental variable
-# (if one is given).
-app = Flask(__name__)
-app.config.from_pyfile(os.path.join(app.root_path, 'default.cfg'))
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'auth.login'
 
-# If no settings file was set, catch the error and log it, but continue.
-# (This should happen when debugging. If it happens in prod, you haven't 
-#  set up the config file properly).
-try:
-    app.config.from_envvar('CREWSCOREBOARD_SETTINGS')
-except RuntimeError as e:
-    pass
-    # print('DANGER')
-    # print('No configuration file was set in the environmental variables')
-    # print('Falling back to default configuration')    
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
-import CrewScoreboard.error_handling
+    bootstrap.init_app(app)
+    mail.init_app(app)
+    moment.init_app(app)
+    db.init_app(app)
+    login_manager.init_app(app)
 
-# Set up the database
-app.db = connect(app.config['DATABASE'])
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
 
-import CrewScoreboard.models
-import CrewScoreboard.auth
-import CrewScoreboard.admin
-import CrewScoreboard.views
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    return app

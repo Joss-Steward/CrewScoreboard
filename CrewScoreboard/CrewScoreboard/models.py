@@ -1,51 +1,42 @@
 import datetime
 
-from peewee import *
-from CrewScoreboard import app
-from flask.ext.security import RoleMixin, UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from . import db, login_manager
 
-class BaseModel(Model):
-    class Meta:
-        database = app.db
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    users = db.relationship('User', backref='role', lazy='dynamic')
 
-class Team(BaseModel):
-    name = CharField()
-    points = IntegerField()
-    team_color = CharField()
+    def __repr__(self):
+        return '<Role %r>' % self.name
 
-class Student(BaseModel):
-    name = TextField()
-    team = ForeignKeyField(Team, related_name='students')
 
-class Role(BaseModel, RoleMixin):
-    name = CharField(unique=True)
-    description = TextField(null=True)
+class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(64), unique=True, index=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    password_hash = db.Column(db.String(128))
 
-class User(BaseModel, UserMixin):
-    email = TextField()
-    password = TextField()
-    active = BooleanField(default=True)
-    confirmed_at = DateTimeField(null=True)
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
 
-class UserRoles(BaseModel):
-    # Because peewee does not come with built-in many-to-many
-    # relationships, we need this intermediary class to link
-    # user to roles.
-    user = ForeignKeyField(User, related_name='roles')
-    role = ForeignKeyField(Role, related_name='users')
-    name = property(lambda self: self.role.name)
-    description = property(lambda self: self.role.description)
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
 
-def create_tables():
-    app.db.connect()
-    app.db.create_tables([Team, Student, Role, User, UserRoles])
-    app.user_datastore.create_role(name='user')
-    app.user_datastore.create_role(name='admin')
-    app.db.commit()
-    app.db.close()
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
-def drop_tables():
-    app.db.connect()
-    app.db.drop_tables([Team, Student, Role, User, UserRoles])
-    app.db.commit()
-    app.db.close()
+    def __repr__(self):
+        return '<User %r>' % self.username
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))

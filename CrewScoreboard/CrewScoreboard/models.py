@@ -2,11 +2,13 @@ import datetime
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
+from sqlalchemy import Table, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from . import db, login_manager
 
 class Permission:
     ADD_POINTS = 0x01
-    ADD_USERS = 0x02    
+    ADD_USERS = 0x02
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -35,13 +37,23 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
+user_teams_table = Table('user_teams_table', db.Model.metadata,
+    Column('user_id', Integer, ForeignKey('teams.id')),
+    Column('team_id', Integer, ForeignKey('siteusers.id'))
+)
+
 class User(UserMixin, db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'siteusers'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
+
+    teams = relationship(
+        "Team",
+        secondary=user_teams_table,
+        back_populates="users")
 
     @property
     def password(self):
@@ -67,6 +79,25 @@ class AnonymouseUser(AnonymousUserMixin):
 
 login_manager.anonymous_user = AnonymouseUser
 
+class Team(db.Model):
+    __tablename__ = 'teams'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, index=True)
+    points = db.relationship('Point', backref='team', lazy='dynamic')
+    users = relationship(
+        "User",
+        secondary=user_teams_table,
+        back_populates="teams")
+
+class Point(db.Model):
+    __tablename__ = 'points'
+    id = db.Column(db.Integer, primary_key=True)
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
+    value = db.Column(db.Numeric)
+    header = db.Column(db.Text())
+    body = db.Column(db.Text())
+
+# Other functions....
 def create_admin(email, password):
     user = User.query.filter_by(username=email).first()
     if user is None:

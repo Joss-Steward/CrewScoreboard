@@ -30,9 +30,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CrewScoreboard\auth\auth.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CrewScoreboard\auth\forms.py">
       <SubType>Code</SubType>
     </Compile>
@@ -43,6 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="config.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CrewScoreboard\decorators.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CrewScoreboard\logging\error_handling.py">
@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="migrations\env.py" />
     <Compile Include="migrations\versions\1544ad774d5_initial_migration.py" />
+    <Compile Include="migrations\versions\43f122c1fd_added_the_framework_for_roles_and_.py" />
     <Compile Include="runserver.py" />
     <Compile Include="CrewScoreboard\__init__.py" />
     <Compile Include="CrewScoreboard\main\views.py" />

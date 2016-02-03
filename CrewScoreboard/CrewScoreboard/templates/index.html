@@ -8,6 +8,7 @@
     <p><a href="http://flask.pocoo.org/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>
 
+{% if current_user.can(Permission.ADD_USERS)%}
 <div class="row">
     <div class="col-md-4">
         <h2>Getting started</h2>
@@ -29,5 +30,6 @@
         <p><a class="btn btn-default" href="http://azure.microsoft.com">Learn more &raquo;</a></p>
     </div>
 </div>
+{% endif %}
 
 {% endblock %}

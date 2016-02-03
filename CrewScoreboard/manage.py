@@ -1,8 +1,9 @@
 import os
 
-from flask_script import Server, Manager, Command, prompt_bool, prompt, prompt_pass
+from flask_script import Server, Manager, Command, Shell, prompt, prompt_pass, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 from CrewScoreboard import create_app, db
+from CrewScoreboard.models import User, Role, create_admin
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
@@ -10,6 +11,12 @@ migrate = Migrate(app, db)
 
 # This provides most of the database setup logic and such
 manager.add_command('db', MigrateCommand)
+
+# Do a little setup before creating the interactive shell
+def make_shell_context():
+    return dict(app=app, db=db, User=User, Role=Role)
+
+manager.add_command("shell", Shell(make_context=make_shell_context))
 
 #@manager.option('-u', '--username', dest='username', default=None)
 #@manager.option('-p', '--password', dest='password', default=None)
@@ -23,7 +30,8 @@ def admin(username=None, password=None):
     while password is None:
         password = prompt_pass('Please enter a Password')
     
-    auth.create_admin(username, password)
+    create_admin(username, password)
+
 
 if __name__ == "__main__":
     try:

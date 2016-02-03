@@ -14,6 +14,7 @@ manager.add_command('db', MigrateCommand)
 
 # Do a little setup before creating the interactive shell
 def make_shell_context():
+    app.logger.info("Interactive shell session started from manage.py")
     return dict(app=app, db=db, User=User, Role=Role)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
@@ -29,12 +30,16 @@ def admin(username=None, password=None):
 
     while password is None:
         password = prompt_pass('Please enter a Password')
-    
-    create_admin(username, password)
+
+    try:    
+        create_admin(username, password)
+        app.logger.info("Added a new admin user ({0}) from manage.py", username)
+    except:
+        print("Something went wrong, sorry.")
 
 
 if __name__ == "__main__":
-    try:
+    try:        
         manager.run()
     except KeyboardInterrupt:
         print("Ended by Ctrl-C")

@@ -45,7 +45,7 @@
     <Compile Include="CrewScoreboard\decorators.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CrewScoreboard\logging\error_handling.py">
+    <Compile Include="CrewScoreboard\logging.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CrewScoreboard\main\errors.py">
@@ -73,7 +73,6 @@
   <ItemGroup>
     <Folder Include="CrewScoreboard\" />
     <Folder Include="CrewScoreboard\auth\" />
-    <Folder Include="CrewScoreboard\logging\" />
     <Folder Include="CrewScoreboard\main\" />
     <Folder Include="CrewScoreboard\static\" />
     <Folder Include="CrewScoreboard\static\content\" />

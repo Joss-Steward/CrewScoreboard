@@ -53,11 +53,11 @@ class BaseConfig:
     Gotta love logging.
     """
     # By default, we use a rotating log.
-    # Each backup has a max size of 5 KB, and 5 coppies are kept
+    # Each backup has a max size of 5 MB, and 5 coppies are kept
     # (Named like app.log.1, app.log.2, etc...    
 
     LOG_FILE_LOCATION = 'CrewScoreboard.log'
-    LOG_FILE_SIZE_LIMIT_BYTES = 5000
+    LOG_FILE_SIZE_LIMIT_BYTES = 5000000
     LOG_FILE_NUM_BACKUPS = 5
 
     """

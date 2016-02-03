@@ -1,15 +1,11 @@
 from flask import Flask
-#from flask.ext.bootstrap import Bootstrap
 from flask_bootstrap import Bootstrap
-#from flask.ext.mail import Mail
 from flask_mail import Mail
-#from flask.ext.moment import Moment
 from flask_moment import Moment
-#from flask.ext.sqlalchemy import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-#from flask.ext.login import LoginManager
 from flask_login import LoginManager
 from config import config
+from CrewScoreboard.logging import configure_logging
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -25,16 +21,26 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
+    configure_logging(app)
+
+    app.logger.info("Application Startup")
+
+    if app.debug:
+        app.logger.warning("APPLICATION STARTED IN DEBUG MODE. ARBITRARY CODE EXECUTION WILL BE POSSIBLE.")
+
     bootstrap.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
 
+    app.logger.debug("Adding 'main' blueprint")
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    app.logger.debug("Adding 'auth' blueprint")
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+    app.logger.info("Application created successfully")
     return app

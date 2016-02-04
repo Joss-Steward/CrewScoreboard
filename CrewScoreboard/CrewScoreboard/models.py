@@ -7,11 +7,12 @@ from sqlalchemy.orm import relationship
 from . import db, login_manager
 
 class Permission:
-    ADD_POINTS =    0b00000001
-    ADD_USERS =     0b00000010
-    REMOVE_USERS =  0b00000100
-    ADD_TEAMS =     0b00001000
-    REMOVE_TEAMS =  0b00010000    
+    ADD_POINTS =     0b00000001
+    REMOVE_POINTS =  0b00000010
+    ADD_USERS =      0b00000100
+    REMOVE_USERS =   0b00001000
+    ADD_TEAMS =      0b00010000
+    REMOVE_TEAMS =   0b00100000
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -27,8 +28,13 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'Team_Leader': (Permission.ADD_POINTS, True),
-            'Administrator': (Permission.ADD_POINTS | Permission.ADD_USERS, True)
+            'Team_Leader': (Permission.ADD_POINTS | Permission.REMOVE_POINTS, True),
+            'Administrator': (  Permission.ADD_POINTS | 
+                                Permission.REMOVE_POINTS | 
+                                Permission.ADD_USERS |
+                                Permission.REMOVE_USERS |
+                                Permission.ADD_TEAMS |
+                                Permission.REMOVE_TEAMS, True)
         }
 
         for r in roles:

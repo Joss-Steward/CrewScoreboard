@@ -7,9 +7,3 @@ from . import main
 @main.route('/')
 def index():
     return render_template('index.html')
-
-@main.route('/admin')
-@login_required
-@permission_required(Permission.ADD_USERS)
-def amin():
-    return "Admins only"

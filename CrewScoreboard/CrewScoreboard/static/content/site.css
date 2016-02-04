@@ -52,6 +52,7 @@ body {
 
 body > .container {
   padding: 60px 15px 0;
+  padding-top: 10px;
 }
 .container .text-muted {
   margin: 20px 0;
@@ -64,4 +65,16 @@ body > .container {
 
 code {
   font-size: 80%;
+}
+
+.navbar {
+    margin-bottom: 5px;
+}
+
+.page-header {
+    margin-top: 10px;
+}
+
+.alert {
+    margin-bottom: 0px;
 }

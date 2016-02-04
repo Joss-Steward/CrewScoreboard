@@ -1,0 +1,28 @@
+﻿{% extends "layout.html" %}
+
+{% block title %}Editing {{ user.username }}{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="page-header">
+        <h1>Editing {{ user.username }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST" action="{{ url_for('admin.edit_user', user_id=user.id) }}">
+            {{ form.hidden_tag() }}            
+            {{ form.csrt_token }}
+            <div class="form-group">
+                <label for="exampleInputEmail1">{{ form.username.label }}</label>
+                {{ form.username(size=20) }}
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">{{ form.password.label }}</label>
+                {{ form.password(size=20) }}
+            </div>
+            <input type="submit" value="Save">
+        </form>
+    </div>
+</div>
+{% endblock %}

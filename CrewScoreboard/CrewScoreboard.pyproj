@@ -95,6 +95,8 @@
     <Content Include="CrewScoreboard\templates\404.html" />
     <Content Include="CrewScoreboard\templates\500.html" />
     <Content Include="CrewScoreboard\templates\admin\admin_dashboard.html" />
+    <Content Include="CrewScoreboard\templates\admin\edit_user.html" />
+    <Content Include="CrewScoreboard\templates\admin\manage_users.html" />
     <Content Include="CrewScoreboard\templates\auth\login.html" />
     <Content Include="migrations\alembic.ini" />
     <Content Include="migrations\README" />

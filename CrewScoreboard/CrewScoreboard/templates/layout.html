@@ -1,33 +1,33 @@
-﻿<html>
-
-{% block head %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
-          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"/>
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
 
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='content/site.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/site.css') }}" type="text/css"/>
 
     <!--<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">-->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"/>    
+    {% endblock %}
 </head>
-{% endblock %}
-
 <body>
     {% block navbar %}
     <div class="navbar navbar-default navbar-static-top">
@@ -54,7 +54,7 @@
                     {% else %}
                     <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
                     {% endif %}
-                </ul>                
+                </ul>
             </div>
         </div>
     </div>
@@ -62,58 +62,22 @@
 
     <div class="container body-content">
         {% block content %}
-            {% for message in get_flashed_messages() %}
-            <div class="alert alert-warning">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
-            </div>
-            {% endfor %}
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
 
-            {% block page_content %}
-            {% endblock %}
-        {% endblock %}        
+        {% block page_content %}
+        {% endblock %}
+        {% endblock %}
     </div>
     <footer class="footer">
         <div class="container">
             <p class="text-muted">Place sticky footer content here.</p>
         </div>
     </footer>
-    <!--<footer class="section section-primary">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h1>Footer header</h1>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit,
-                        <br>sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
-                        <br>Ut enim ad minim veniam, quis nostrud
-                    </p>
-                </div>
-                <div class="col-sm-6">
-                    <p class="text-info text-right">
-                        <br>
-                        <br>
-                    </p>
-                    <div class="row">
-                        <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
-                            <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
-                            <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
-                            <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
-                            <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 hidden-xs text-right">
-                            <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
-                            <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
-                            <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
-                            <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>-->
 </body>
 
 {% block scripts %}

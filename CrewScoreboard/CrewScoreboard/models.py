@@ -7,8 +7,11 @@ from sqlalchemy.orm import relationship
 from . import db, login_manager
 
 class Permission:
-    ADD_POINTS = 0x01
-    ADD_USERS = 0x02
+    ADD_POINTS =    0b00000001
+    ADD_USERS =     0b00000010
+    REMOVE_USERS =  0b00000100
+    ADD_TEAMS =     0b00001000
+    REMOVE_TEAMS =  0b00010000    
 
 class Role(db.Model):
     __tablename__ = 'roles'

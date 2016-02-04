@@ -48,7 +48,6 @@ user_teams_table = Table('user_teams_table', db.Model.metadata,
 class User(UserMixin, db.Model):
     __tablename__ = 'siteusers'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
@@ -101,14 +100,13 @@ class Point(db.Model):
     body = db.Column(db.Text())
 
 # Other functions....
-def create_admin(email, password):
-    user = User.query.filter_by(username=email).first()
+def create_admin(username, password):
+    user = User.query.filter_by(username=username).first()
     if user is None:
         user = User()
     else:
-        print("User (" + email + ") already exists. Altering password and adding permissions.")
-    user.email = email
-    user.username = email
+        print("User (" + username + ") already exists. Altering password and adding permissions.")
+    user.username = username
     user.password = password
     role = Role.query.filter_by(name='Administrator').first()
     if role is None:

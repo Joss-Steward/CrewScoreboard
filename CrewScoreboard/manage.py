@@ -37,7 +37,6 @@ def admin(username=None, password=None):
     except:
         print("Something went wrong, sorry.")
 
-
 if __name__ == "__main__":
     try:        
         manager.run()

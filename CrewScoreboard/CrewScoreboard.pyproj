@@ -68,7 +68,10 @@
     </Compile>
     <Compile Include="migrations\env.py" />
     <Compile Include="migrations\versions\1544ad774d5_initial_migration.py" />
+    <Compile Include="migrations\versions\19b46bab068_renamed_users_and_added_teams.py" />
+    <Compile Include="migrations\versions\22d298e4d49_got_rid_of_email.py" />
     <Compile Include="migrations\versions\43f122c1fd_added_the_framework_for_roles_and_.py" />
+    <Compile Include="migrations\versions\58eb8c49694_added_teams_and_points.py" />
     <Compile Include="runserver.py" />
     <Compile Include="CrewScoreboard\__init__.py" />
     <Compile Include="CrewScoreboard\main\views.py" />
